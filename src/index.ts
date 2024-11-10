@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { MealController } from './infrastructure/controllers/meal.controller';
 import { GetIngredientsService } from './application/services/get-ingredients.service';
+import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
 import { MealApiAdapter } from './infrastructure/adapters/meal-api.adapter';
 
 dotenv.config();
@@ -13,7 +14,13 @@ const port = process.env.PORT || 3000;
 // Dependencies
 const mealRepository = new MealApiAdapter();
 const getIngredientsService = new GetIngredientsService(mealRepository);
-const mealController = new MealController(getIngredientsService);
+const getMealsByIngredientService = new GetMealsByIngredientService(
+  mealRepository
+);
+const mealController = new MealController(
+  getIngredientsService,
+  getMealsByIngredientService
+);
 
 app.use(express.json());
 
@@ -24,6 +31,10 @@ app.get('/health', (_, res) => {
 
 app.get('/api/ingredients', (req, res) =>
   mealController.getIngredients(req, res)
+);
+
+app.get('/api/meals/:ingredient', (req, res) =>
+  mealController.getMealsByIngredient(req, res)
 );
 
 app.listen(port, () => {
