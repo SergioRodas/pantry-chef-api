@@ -13,7 +13,7 @@ export class GetIngredientsService implements GetIngredientsUseCase {
       if (error instanceof DomainException) {
         throw error;
       }
-      throw new Error('Failed to fetch ingredients');
+      throw new DomainException('Failed to fetch ingredients');
     }
   }
 }
