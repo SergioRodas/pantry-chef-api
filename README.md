@@ -158,4 +158,3 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [TheMealDB](https://www.themealdb.com/) for providing the recipe API
-```
