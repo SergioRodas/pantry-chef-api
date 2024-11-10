@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { MealController } from './infrastructure/controllers/meal.controller';
 import { GetIngredientsService } from './application/services/get-ingredients.service';
 import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
+import { GetMealDetailService } from './application/services/get-meal-detail.service';
 import { MealApiAdapter } from './infrastructure/adapters/meal-api.adapter';
 
 dotenv.config();
@@ -17,9 +18,12 @@ const getIngredientsService = new GetIngredientsService(mealRepository);
 const getMealsByIngredientService = new GetMealsByIngredientService(
   mealRepository
 );
+const getMealDetailService = new GetMealDetailService(mealRepository);
+
 const mealController = new MealController(
   getIngredientsService,
-  getMealsByIngredientService
+  getMealsByIngredientService,
+  getMealDetailService
 );
 
 app.use(express.json());
@@ -35,6 +39,10 @@ app.get('/api/ingredients', (req, res) =>
 
 app.get('/api/meals/:ingredient', (req, res) =>
   mealController.getMealsByIngredient(req, res)
+);
+
+app.get('/api/meals/detail/:id', (req, res) =>
+  mealController.getMealDetail(req, res)
 );
 
 app.listen(port, () => {

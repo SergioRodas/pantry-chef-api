@@ -1,5 +1,9 @@
 import { Ingredient } from '../../domain/entities/ingredient.entity';
 import { Meal } from '../../domain/entities/meal.entity';
+import {
+  MealDetail,
+  MealIngredient,
+} from '../../domain/entities/meal-detail.entity';
 import { MealRepositoryPort } from '../../application/ports/out/meal-repository.port';
 import { axiosInstance } from '../config/axios.config';
 import { API_URLS } from '../../shared/constants/api.constants';
@@ -23,6 +27,23 @@ interface TheMealDBIngredientsResponse {
 
 interface TheMealDBMealsResponse {
   meals: TheMealDBMeal[] | null;
+}
+
+interface TheMealDBDetailResponse {
+  meals:
+    | {
+        idMeal: string;
+        strMeal: string;
+        strCategory: string;
+        strArea: string;
+        strInstructions: string;
+        strMealThumb: string;
+        strTags: string | null;
+        strYoutube: string | null;
+        strSource: string | null;
+        [key: string]: string | null;
+      }[]
+    | null;
 }
 
 export class MealApiAdapter implements MealRepositoryPort {
@@ -62,6 +83,52 @@ export class MealApiAdapter implements MealRepositoryPort {
     } catch (error) {
       console.error('Error fetching meals:', error);
       throw new Error('Failed to fetch meals');
+    }
+  }
+
+  async getMealDetail(id: string): Promise<MealDetail | null> {
+    try {
+      const { data } = await axiosInstance.get<TheMealDBDetailResponse>(
+        `${API_URLS.ENDPOINTS.MEAL_DETAIL}${id}`
+      );
+
+      if (!data.meals) {
+        return null;
+      }
+
+      const meal = data.meals[0];
+      const ingredients: MealIngredient[] = [];
+
+      // Extraer ingredientes y medidas
+      for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+
+        const mealIngredient = MealIngredient.create(
+          ingredient || '',
+          measure || ''
+        );
+
+        if (mealIngredient) {
+          ingredients.push(mealIngredient);
+        }
+      }
+
+      return MealDetail.create(
+        meal.idMeal,
+        meal.strMeal,
+        meal.strCategory,
+        meal.strArea,
+        meal.strInstructions,
+        meal.strMealThumb,
+        meal.strTags ? meal.strTags.split(',').map((tag) => tag.trim()) : [],
+        meal.strYoutube,
+        ingredients,
+        meal.strSource
+      );
+    } catch (error) {
+      console.error('Error fetching meal detail:', error);
+      throw new Error('Failed to fetch meal detail');
     }
   }
 }

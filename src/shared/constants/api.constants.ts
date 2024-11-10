@@ -3,5 +3,6 @@ export const API_URLS = {
   ENDPOINTS: {
     LIST_INGREDIENTS: '/list.php?i=list',
     FILTER_BY_INGREDIENT: '/filter.php?i=',
+    MEAL_DETAIL: '/lookup.php?i=',
   },
 } as const;
