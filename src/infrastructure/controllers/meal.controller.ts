@@ -20,10 +20,10 @@ export class MealController {
     private readonly getMealDetailUseCase: GetMealDetailUseCase
   ) {}
 
-  async getIngredients(_: Request, res: Response): Promise<void> {
+  async getIngredients(_: Request, res: Response): Promise<Response> {
     try {
       const ingredients = await this.getIngredientsUseCase.execute();
-      res.json(ingredients);
+      return res.json(ingredients);
     } catch (error) {
       if (error instanceof DomainException) {
         throw new BadRequestException(error.message);
@@ -32,25 +32,18 @@ export class MealController {
     }
   }
 
-  async getMealsByIngredient(req: Request, res: Response): Promise<void> {
-    try {
-      const { ingredient } = req.params;
+  async getMealsByIngredient(req: Request, res: Response): Promise<Response> {
+    const ingredient = req.params.ingredient;
 
-      if (!ingredient) {
-        throw new BadRequestException('Ingredient is required');
-      }
-
-      const meals = await this.getMealsByIngredientUseCase.execute(ingredient);
-      res.json(meals);
-    } catch (error) {
-      if (error instanceof DomainException) {
-        throw new BadRequestException(error.message);
-      }
-      throw error;
+    if (!ingredient || !ingredient.trim()) {
+      throw new BadRequestException('Ingredient is required');
     }
+
+    const meals = await this.getMealsByIngredientUseCase.execute(ingredient);
+    return res.json(meals);
   }
 
-  async getMealDetail(req: Request, res: Response): Promise<void> {
+  async getMealDetail(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
 
@@ -64,7 +57,7 @@ export class MealController {
         throw new NotFoundException('Meal');
       }
 
-      res.json(meal);
+      return res.json(meal);
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

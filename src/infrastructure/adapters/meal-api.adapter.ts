@@ -7,6 +7,7 @@ import {
 import { MealRepositoryPort } from '../../application/ports/out/meal-repository.port';
 import { axiosInstance } from '../config/axios.config';
 import { API_URLS } from '../../shared/constants/api.constants';
+import { DomainException } from '../../domain/exceptions/domain.exception';
 
 interface TheMealDBIngredient {
   idIngredient: string;
@@ -53,6 +54,10 @@ export class MealApiAdapter implements MealRepositoryPort {
         API_URLS.ENDPOINTS.LIST_INGREDIENTS
       );
 
+      if (!data.meals) {
+        return [];
+      }
+
       return data.meals.map((ingredient) =>
         Ingredient.create(
           ingredient.idIngredient,
@@ -63,7 +68,7 @@ export class MealApiAdapter implements MealRepositoryPort {
       );
     } catch (error) {
       console.error('Error fetching ingredients:', error);
-      throw new Error('Failed to fetch ingredients');
+      throw new DomainException('Failed to fetch ingredients');
     }
   }
 
@@ -82,7 +87,7 @@ export class MealApiAdapter implements MealRepositoryPort {
       );
     } catch (error) {
       console.error('Error fetching meals:', error);
-      throw new Error('Failed to fetch meals');
+      throw new DomainException('Failed to fetch meals');
     }
   }
 
@@ -128,7 +133,7 @@ export class MealApiAdapter implements MealRepositoryPort {
       );
     } catch (error) {
       console.error('Error fetching meal detail:', error);
-      throw new Error('Failed to fetch meal detail');
+      throw new DomainException('Failed to fetch meal detail');
     }
   }
 }
