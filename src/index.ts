@@ -1,6 +1,8 @@
 import './infrastructure/config/env.config';
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './infrastructure/config/swagger.config';
 import { MealController } from './infrastructure/controllers/meal.controller';
 import { GetIngredientsService } from './application/services/get-ingredients.service';
 import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
@@ -28,6 +30,10 @@ const mealController = new MealController(
 );
 
 app.use(express.json());
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.get('/health', (_, res) => {
