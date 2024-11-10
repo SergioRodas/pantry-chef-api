@@ -1,4 +1,5 @@
 import { Meal } from '../../domain/entities/meal.entity';
+import { DomainException } from '../../domain/exceptions/domain.exception';
 import { GetMealsByIngredientUseCase } from '../ports/in/get-meals-by-ingredient.use-case';
 import { MealRepositoryPort } from '../ports/out/meal-repository.port';
 
@@ -9,9 +10,16 @@ export class GetMealsByIngredientService
 
   async execute(ingredient: string): Promise<Meal[]> {
     if (!ingredient.trim()) {
-      throw new Error('Ingredient cannot be empty');
+      throw new DomainException('Ingredient cannot be empty');
     }
 
-    return this.mealRepository.getMealsByIngredient(ingredient);
+    try {
+      return await this.mealRepository.getMealsByIngredient(ingredient);
+    } catch (error) {
+      if (error instanceof DomainException) {
+        throw error;
+      }
+      throw new Error('Failed to fetch meals');
+    }
   }
 }

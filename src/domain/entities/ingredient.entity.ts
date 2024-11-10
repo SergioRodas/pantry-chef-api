@@ -1,3 +1,5 @@
+import { RequiredFieldException } from '../exceptions/domain.exception';
+
 export class Ingredient {
   constructor(
     public readonly id: string,
@@ -12,9 +14,8 @@ export class Ingredient {
     description: string | null,
     type: string | null
   ): Ingredient {
-    if (!id || !name) {
-      throw new Error('Ingredient must have an id and name');
-    }
+    if (!id) throw new RequiredFieldException('id');
+    if (!name) throw new RequiredFieldException('name');
 
     return new Ingredient(id, name, description, type);
   }

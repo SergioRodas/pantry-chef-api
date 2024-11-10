@@ -2,6 +2,16 @@ import { Request, Response } from 'express';
 import { GetIngredientsUseCase } from '../../application/ports/in/get-ingredients.use-case';
 import { GetMealsByIngredientUseCase } from '../../application/ports/in/get-meals-by-ingredient.use-case';
 import { GetMealDetailUseCase } from '../../application/ports/in/get-meal-detail.use-case';
+import {
+  DomainException,
+  InvalidMealIdException,
+  RequiredFieldException,
+} from '../../domain/exceptions/domain.exception';
+import {
+  BadRequestException,
+  HttpException,
+  NotFoundException,
+} from '../../shared/exceptions/http.exception';
 
 export class MealController {
   constructor(
@@ -15,8 +25,10 @@ export class MealController {
       const ingredients = await this.getIngredientsUseCase.execute();
       res.json(ingredients);
     } catch (error) {
-      console.error('Controller error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      if (error instanceof DomainException) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
     }
   }
 
@@ -25,15 +37,16 @@ export class MealController {
       const { ingredient } = req.params;
 
       if (!ingredient) {
-        res.status(400).json({ message: 'Ingredient is required' });
-        return;
+        throw new BadRequestException('Ingredient is required');
       }
 
       const meals = await this.getMealsByIngredientUseCase.execute(ingredient);
       res.json(meals);
     } catch (error) {
-      console.error('Controller error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      if (error instanceof DomainException) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
     }
   }
 
@@ -42,29 +55,34 @@ export class MealController {
       const { id } = req.params;
 
       if (!id) {
-        res.status(400).json({ message: 'Meal ID is required' });
-        return;
+        throw new BadRequestException('Meal ID is required');
       }
 
       const meal = await this.getMealDetailUseCase.execute(id);
 
       if (!meal) {
-        res.status(404).json({ message: 'Meal not found' });
-        return;
+        throw new NotFoundException('Meal');
       }
 
       res.json(meal);
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === 'Invalid meal ID format'
-      ) {
-        res.status(400).json({ message: error.message });
-        return;
+      if (error instanceof HttpException) {
+        throw error;
       }
 
-      console.error('Controller error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      if (error instanceof InvalidMealIdException) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof RequiredFieldException) {
+        throw new BadRequestException(error.message);
+      }
+
+      if (error instanceof DomainException) {
+        throw new BadRequestException(error.message);
+      }
+
+      throw new BadRequestException('Internal server error');
     }
   }
 }

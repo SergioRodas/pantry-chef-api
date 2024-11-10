@@ -6,6 +6,7 @@ import { GetIngredientsService } from './application/services/get-ingredients.se
 import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
 import { GetMealDetailService } from './application/services/get-meal-detail.service';
 import { MealApiAdapter } from './infrastructure/adapters/meal-api.adapter';
+import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
 
 dotenv.config();
 
@@ -33,17 +34,20 @@ app.get('/health', (_, res) => {
   res.status(200).json({ status: 'OK' });
 });
 
-app.get('/api/ingredients', (req, res) =>
-  mealController.getIngredients(req, res)
+app.get('/api/ingredients', (req, res, next) =>
+  mealController.getIngredients(req, res).catch(next)
 );
 
-app.get('/api/meals/:ingredient', (req, res) =>
-  mealController.getMealsByIngredient(req, res)
+app.get('/api/meals/:ingredient', (req, res, next) =>
+  mealController.getMealsByIngredient(req, res).catch(next)
 );
 
-app.get('/api/meals/detail/:id', (req, res) =>
-  mealController.getMealDetail(req, res)
+app.get('/api/meals/detail/:id', (req, res, next) =>
+  mealController.getMealDetail(req, res).catch(next)
 );
+
+// Error handling
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

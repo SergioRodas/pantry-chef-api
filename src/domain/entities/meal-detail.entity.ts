@@ -1,3 +1,5 @@
+import { RequiredFieldException } from '../exceptions/domain.exception';
+
 export class MealIngredient {
   constructor(
     public readonly name: string,
@@ -38,9 +40,12 @@ export class MealDetail {
     ingredients: MealIngredient[],
     source: string | null
   ): MealDetail {
-    if (!id || !name || !category || !area || !instructions || !thumbnail) {
-      throw new Error('Required fields are missing');
-    }
+    if (!id) throw new RequiredFieldException('id');
+    if (!name) throw new RequiredFieldException('name');
+    if (!category) throw new RequiredFieldException('category');
+    if (!area) throw new RequiredFieldException('area');
+    if (!instructions) throw new RequiredFieldException('instructions');
+    if (!thumbnail) throw new RequiredFieldException('thumbnail');
 
     return new MealDetail(
       id,
