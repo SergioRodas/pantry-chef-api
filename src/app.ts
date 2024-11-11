@@ -6,6 +6,7 @@ import express, {
   NextFunction,
   RequestHandler,
 } from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './infrastructure/config/swagger.config';
@@ -19,6 +20,15 @@ import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
 dotenv.config();
 
 const app: Express = express();
+
+// CORS configuration
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Dependencies
 const mealRepository = new MealApiAdapter();
