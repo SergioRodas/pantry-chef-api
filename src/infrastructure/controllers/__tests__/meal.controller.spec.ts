@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
-import { MealController } from '../meal.controller';
 import { GetIngredientsUseCase } from '../../../application/ports/in/get-ingredients.use-case';
-import { GetMealsByIngredientUseCase } from '../../../application/ports/in/get-meals-by-ingredient.use-case';
 import { GetMealDetailUseCase } from '../../../application/ports/in/get-meal-detail.use-case';
+import { GetMealsByIngredientUseCase } from '../../../application/ports/in/get-meals-by-ingredient.use-case';
 import { Ingredient } from '../../../domain/entities/ingredient.entity';
-import { Meal } from '../../../domain/entities/meal.entity';
 import {
   MealDetail,
   MealIngredient,
 } from '../../../domain/entities/meal-detail.entity';
+import { Meal } from '../../../domain/entities/meal.entity';
 import {
   DomainException,
   InvalidMealIdException,
@@ -17,6 +16,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from '../../../shared/exceptions/http.exception';
+import { MealController } from '../meal.controller';
 
 describe('MealController', () => {
   let controller: MealController;

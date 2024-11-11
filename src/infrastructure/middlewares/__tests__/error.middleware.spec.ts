@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { errorMiddleware } from '../error.middleware';
 import { HttpException } from '../../../shared/exceptions/http.exception';
+import { errorMiddleware } from '../error.middleware';
 
 describe('Error Middleware', () => {
   let mockRequest: Partial<Request>;

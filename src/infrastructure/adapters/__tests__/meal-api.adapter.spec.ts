@@ -1,5 +1,5 @@
-import { MealApiAdapter } from '../meal-api.adapter';
 import { axiosInstance } from '../../config/axios.config';
+import { MealApiAdapter } from '../meal-api.adapter';
 
 // Mock axios
 jest.mock('../../config/axios.config', () => ({

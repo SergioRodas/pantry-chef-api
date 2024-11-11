@@ -1,7 +1,7 @@
-import { GetMealDetailService } from '../get-meal-detail.service';
-import { MealRepositoryPort } from '../../ports/out/meal-repository.port';
 import { MealDetail } from '../../../domain/entities/meal-detail.entity';
 import { InvalidMealIdException } from '../../../domain/exceptions/domain.exception';
+import { MealRepositoryPort } from '../../ports/out/meal-repository.port';
+import { GetMealDetailService } from '../get-meal-detail.service';
 
 describe('GetMealDetailService', () => {
   let service: GetMealDetailService;

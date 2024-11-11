@@ -1,6 +1,6 @@
+import nock from 'nock';
 import { API_URLS } from '../../shared/constants/api.constants';
 import { api } from './setup';
-import nock from 'nock';
 
 describe('Meals API Integration Tests', () => {
   describe('GET /api/ingredients', () => {

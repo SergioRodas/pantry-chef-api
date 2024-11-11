@@ -1,13 +1,13 @@
+import { MealRepositoryPort } from '../../application/ports/out/meal-repository.port';
 import { Ingredient } from '../../domain/entities/ingredient.entity';
-import { Meal } from '../../domain/entities/meal.entity';
 import {
   MealDetail,
   MealIngredient,
 } from '../../domain/entities/meal-detail.entity';
-import { MealRepositoryPort } from '../../application/ports/out/meal-repository.port';
-import { axiosInstance } from '../config/axios.config';
-import { API_URLS } from '../../shared/constants/api.constants';
+import { Meal } from '../../domain/entities/meal.entity';
 import { DomainException } from '../../domain/exceptions/domain.exception';
+import { API_URLS } from '../../shared/constants/api.constants';
+import { axiosInstance } from '../config/axios.config';
 
 interface TheMealDBIngredient {
   idIngredient: string;

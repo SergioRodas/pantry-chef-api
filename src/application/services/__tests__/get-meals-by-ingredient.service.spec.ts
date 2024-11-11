@@ -1,7 +1,7 @@
-import { GetMealsByIngredientService } from '../get-meals-by-ingredient.service';
-import { MealRepositoryPort } from '../../ports/out/meal-repository.port';
 import { Meal } from '../../../domain/entities/meal.entity';
 import { DomainException } from '../../../domain/exceptions/domain.exception';
+import { MealRepositoryPort } from '../../ports/out/meal-repository.port';
+import { GetMealsByIngredientService } from '../get-meals-by-ingredient.service';
 
 describe('GetMealsByIngredientService', () => {
   let service: GetMealsByIngredientService;

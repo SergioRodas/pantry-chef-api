@@ -1,5 +1,5 @@
-import { Meal } from '../meal.entity';
 import { RequiredFieldException } from '../../exceptions/domain.exception';
+import { Meal } from '../meal.entity';
 
 describe('Meal Entity', () => {
   it('should create a valid meal', () => {

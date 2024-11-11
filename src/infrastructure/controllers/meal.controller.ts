@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { GetIngredientsUseCase } from '../../application/ports/in/get-ingredients.use-case';
-import { GetMealsByIngredientUseCase } from '../../application/ports/in/get-meals-by-ingredient.use-case';
 import { GetMealDetailUseCase } from '../../application/ports/in/get-meal-detail.use-case';
+import { GetMealsByIngredientUseCase } from '../../application/ports/in/get-meals-by-ingredient.use-case';
 import {
   DomainException,
   InvalidMealIdException,

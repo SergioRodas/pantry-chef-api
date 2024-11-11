@@ -1,5 +1,5 @@
-import { Ingredient } from '../ingredient.entity';
 import { RequiredFieldException } from '../../exceptions/domain.exception';
+import { Ingredient } from '../ingredient.entity';
 
 describe('Ingredient Entity', () => {
   it('should create a valid ingredient', () => {

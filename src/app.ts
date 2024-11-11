@@ -1,4 +1,6 @@
 import './infrastructure/config/env.config';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import express, {
   Express,
   Request,
@@ -6,15 +8,13 @@ import express, {
   NextFunction,
   RequestHandler,
 } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import { GetIngredientsService } from './application/services/get-ingredients.service';
+import { GetMealDetailService } from './application/services/get-meal-detail.service';
+import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
+import { MealApiAdapter } from './infrastructure/adapters/meal-api.adapter';
 import { swaggerSpec } from './infrastructure/config/swagger.config';
 import { MealController } from './infrastructure/controllers/meal.controller';
-import { GetIngredientsService } from './application/services/get-ingredients.service';
-import { GetMealsByIngredientService } from './application/services/get-meals-by-ingredient.service';
-import { GetMealDetailService } from './application/services/get-meal-detail.service';
-import { MealApiAdapter } from './infrastructure/adapters/meal-api.adapter';
 import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
 
 dotenv.config();

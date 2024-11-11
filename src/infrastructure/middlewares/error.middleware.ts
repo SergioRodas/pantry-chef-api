@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { HttpException } from '../../shared/exceptions/http.exception';
 
 export const errorMiddleware: ErrorRequestHandler = (
